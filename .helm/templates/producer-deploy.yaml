@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer
+  annotations:
+    configmap.reloader.stakater.com/reload: "producer-configmap"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memphis-producer
+  template:
+    metadata:
+      labels:
+        app: memphis-producer
+    spec:
+      containers:
+      - name: memphis-producer
+        image: {{ $.Values.werf.image.producer }}
+        envFrom:
+        - configMapRef:
+            name: "common-config"
+        - configMapRef:
+            name: "producer-configmap"
+        - secretRef:
+            name: "secret"
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"

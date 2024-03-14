@@ -1,0 +1,44 @@
+version: '3'
+
+tasks:
+  infra:
+    dir: infra
+    desc: To manage infrastructure
+    cmds:
+      - helmfile {{.CLI_ARGS}}
+
+  expose:
+    desc: To expose UI and API memphis port
+    cmds:
+      - kubectl port-forward service/memphis 9000:9000 6666:6666 --namespace memphis
+
+  run:
+    dir: apps
+    desc: To start consumer and producer
+    env:
+      PYTHONPATH: "{{.PWD}}:{{.ENV.PYTHONPATH}}"
+    cmds:
+      - python3 {{.ROLE}}/main.py
+    requires:
+      vars: [ROLE]
+
+  teardown:
+    desc: To deploy the application
+    cmds:
+      - werf dismiss --repo {{.REPO}}
+    requires:
+      vars: [REPO]
+
+  deploy:
+    desc: To deploy the application
+    cmds:
+      - werf converge --repo {{.REPO}} --dev
+    requires:
+      vars: [REPO]
+
+  update-rate:
+    desc: "To update producer rate"
+    cmds:
+      - kubectl patch configmap producer-configmap -p '{"data":{"RATE":"{{.RATE}}"}}' -n app
+    requires:
+      vars: [RATE]

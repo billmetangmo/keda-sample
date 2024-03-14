@@ -1,0 +1,14 @@
+project: app
+configVersion: 1
+
+---
+image: producer
+dockerfile: Dockerfile
+args:
+  APP_ROLE: "producer"
+
+---
+image: consumer
+dockerfile: Dockerfile
+args:
+  APP_ROLE: "consumer"

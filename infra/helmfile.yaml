@@ -1,0 +1,60 @@
+repositories:
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: kedacore
+    url: https://kedacore.github.io/charts
+  - name: stakater
+    url: https://stakater.github.io/stakater-charts
+  - name: sealed-secrets
+    url: https://bitnami-labs.github.io/sealed-secrets
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+  - name: memphis
+    url: https://k8s.memphis.dev/charts/
+
+releases:
+  - name: prometheus
+    namespace: default
+    chart: prometheus-community/kube-prometheus-stack
+    version: 57.0.1
+    values: [prometheus/values.yml]
+
+  - name: keda
+    namespace: keda
+    chart: kedacore/keda
+    createNamespace: true
+    version: 2.13.2
+
+  - name: stakater
+    namespace: edfault
+    chart: stakater/reloader
+    createNamespace: true
+    version: 1.0.69
+
+  - name: sealed-secrets
+    namespace: kube-system
+    chart: sealed-secrets/sealed-secrets
+    version: 2.15.0
+
+  - name: loki
+    namespace: logging
+    chart: grafana/loki-stack
+    version: 2.10.2
+    set:
+      - name: "promtail.enabled"
+        value: "true"
+      - name: "loki.persistence.enabled"
+        value: "true"
+      - name: "loki.persistence.size"
+        value: "10Gi"
+
+  - name: memphis
+    namespace: memphis
+    chart: memphis/memphis
+    createNamespace: true
+    wait: true
+    set:
+      - name: "exporter.enabled"
+        value: "true"
+      - name: "cluster.replicas"
+        value: "1"

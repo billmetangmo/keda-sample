@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-config
+data:
+  HOST: "memphis.memphis.svc.cluster.local"
+  QUEUE_NAME: "default"
