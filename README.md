@@ -98,7 +98,7 @@ However, I am aware that while these settings are advantageous for development a
 1. **Install Required Components**:
    If starting with a new Kubernetes cluster, you can install all necessary components by executing the following command:
    ```bash
-   task infra --apply
+   task infra -- apply
    ```
    If some components are already installed, you may need to comment out those parts of the script to avoid conflicts.
 
