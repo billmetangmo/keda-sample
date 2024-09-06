@@ -17,15 +17,6 @@ This project implements a scalable, event-driven system using Kubernetes, with a
 - Python3: Ensure Python3 is installed on your system.
 - Docker: Make sure Docker is connected to a docker registry with an existing empty repository `<repo>`
 
-## Assumptions
-
-**Given the limited time frame of three days, the system was designed with the following assumptions:**
-
-- **Idempotency**: Sending and receiving messages are idempotent, preventing network issues from causing unacknowledged messages or acknowledgment timeouts. The system adheres to exactly-once semantics.
-- **Single-Core Processing**: Assumes single-core to simplify development, despite modern multi-core, multi-thread capabilities. This simplifies ensuring message order without designing for multi-processing.
-- **Schema Flexibility**: The system doesn't enforce message schemas, allowing for greater flexibility.
-- **Self-Hosted Approach**: Chosen to ease scalability testing and eliminate network-related complexities by running everything on the same machine.
-
 
 ## Infrastructure Choices
 
